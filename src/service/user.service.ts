@@ -1,4 +1,4 @@
-import { HydratedDocument } from "mongoose";
+import { HydratedDocument, FilterQuery } from "mongoose";
 import UserModel, { UserInput, UserDocument } from "../model/user.model";
 import { omit } from "lodash";
 
@@ -30,4 +30,8 @@ export async function validatePassword({
   if (!isValid) return false;
 
   return omit(user.toJSON(), "password");
+}
+
+export async function findUser(query: FilterQuery<UserDocument>) {
+  return UserModel.findOne(query).lean();
 }
