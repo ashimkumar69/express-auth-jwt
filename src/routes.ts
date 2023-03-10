@@ -3,7 +3,12 @@ import { createUserControllerHandler } from "./controller/user.controller";
 import validateResource from "./middleware/validateResource";
 import { createUserSchema } from "./schema/user.schema";
 import { createSessionSchema } from "./schema/session.schema";
-import { createUserSessionControllerHandler } from "./controller/session.controller";
+import {
+  createUserSessionControllerHandler,
+  getUserSessionsHandler,
+  deleteSessionHandler,
+} from "./controller/session.controller";
+import requireUser from "./middleware/requireUser";
 
 export default async function routes(app: Express) {
   app.get("/health-check", (req: Request, res: Response) => {
@@ -21,4 +26,8 @@ export default async function routes(app: Express) {
     validateResource(createUserSchema),
     createUserControllerHandler
   );
+
+  app.get("/api/sessions", requireUser, getUserSessionsHandler);
+
+  app.delete("/api/sessions", requireUser, deleteSessionHandler);
 }

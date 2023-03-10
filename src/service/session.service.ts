@@ -1,4 +1,4 @@
-import { HydratedDocument } from "mongoose";
+import { HydratedDocument, FilterQuery, UpdateQuery } from "mongoose";
 import SessionModel from "../model/session.model";
 import { SessionDocument } from "../model/session.model";
 
@@ -14,4 +14,15 @@ export async function createSession(
   } catch (error: any) {
     throw new Error(error);
   }
+}
+
+export async function findSessions(query: FilterQuery<SessionDocument>) {
+  return SessionModel.find(query).lean();
+}
+
+export async function updateSession(
+  query: FilterQuery<SessionDocument>,
+  update: UpdateQuery<SessionDocument>
+) {
+  return SessionModel.updateOne(query, update);
 }
